@@ -129,9 +129,8 @@ $ cat urls.txt
 http://www.google.com/
 http://www.google.com.kh/
 $ http get-urls -url-file=urls.txt
-http://www.google.com.kh/ 200 OK 112.379692ms
-http://www.google.com/ 200 OK 215.434101ms
-
+200 79.174555ms http://www.google.com.kh/
+200 160.027054ms http://www.google.com/
 ```
 
 ## http stress-test

@@ -7,7 +7,6 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
-	"runtime/pprof"
 	"strings"
 	"sync"
 	"time"
@@ -71,7 +70,7 @@ func guResourceConsumer(msgs <-chan *HttpPair, consumeBody bool) {
 			ioutil.ReadAll(msg.Resp.Body)
 		}
 
-		fmt.Printf("%v %v %v\n", msg.Req.URL, msg.Resp.Status, msg.Time)
+		fmt.Printf("%v %v %v\n", msg.Resp.StatusCode, msg.Time, msg.Req.URL)
 		msg.Resp.Body.Close()
 	}
 }
@@ -119,19 +118,11 @@ func guMain(args []string) error {
 		return nil
 	}
 
-	pf, err := os.Create("get-urls.prof")
-	if err != nil {
-		return err
-	}
-
-	pprof.StartCPUProfile(pf)
-	defer pprof.StopCPUProfile()
-
 	*method = strings.ToUpper(*method)
 	cli := &http.Client{Timeout: *httpTimeout}
 	urls, err := guUrlReader(*urlFile)
 	if err != nil {
-		fmt.Println(err)
+		return err
 	}
 
 	var ms []<-chan *HttpPair

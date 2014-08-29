@@ -6,6 +6,15 @@ Go functionality to the shell that makes life easier (e.g., the file servers
 
 ### Install
 
+Make sure you have Go installed, e.g., by checking the Go version:
+
+```
+$ go version
+go version go1.3.1 freebsd/amd64
+```
+
+If Go is not installed, install it using your OS package manager
+
 If you havn't configured your GOPATH please do so:
 
 ```
@@ -15,7 +24,7 @@ $ export GOPATH=$HOME/go-workspace
 $ export PATH=$GOPATH/bin:$PATH
 ```
 
-When your GOPATH is configured, get the package to your GOPATH
+If Go is installed and your GOPATH is configured, get the package to your GOPATH
 
 ```
 $ go get github.com/sebcat/http

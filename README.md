@@ -3,9 +3,28 @@
 
 A collection of tools for testing HTTP services as well as exposing some
 Go functionality to the shell that makes life easier (e.g., the file servers
-  
+
+### Install
+
+If you havn't configured your GOPATH please do so:
 
 ```
+$ mkdir $HOME/go-workspace
+# put the envvars below in your shell rc file too
+$ export GOPATH=$HOME/go-workspace
+$ export PATH=$GOPATH/bin:$PATH
+```
+
+When your GOPATH is configured, get the package to your GOPATH
+
+```
+$ go get github.com/sebcat/http
+```
+
+And done!
+
+```
+$ http
 Commands:
   http mwu
     Sample HTTP requests and perform the MW U test on two HTTP response-time groups
@@ -17,12 +36,13 @@ Commands:
     Retrieve a list of HTTP resources and their status codes
   http stress-test
     Send HTTP requests at a specified rate and duration
+
 ```
 
-## http mwu
 
+## http mwu
 Sample the response times for two requests (x,y) and calculate the p-value
-for the [http://en.wikipedia.org/wiki/Mann%E2%80%93Whitney_U_test](Mann-Whitney U test). This can be used for mapping back end behavior 
+for the [http://en.wikipedia.org/wiki/Mann–Whitney_U_test](Mann-Whitney U test). This can be used for mapping back end behavior 
 e.g., finding side channels on the time spectrum, testing for blind SQL injections and
 correlating changes of certain input parameters to an increased/decreased response time.
 

@@ -90,7 +90,7 @@ func stMain(args []string) error {
 	f.StringVar(&req.Method, "method", "GET", "HTTP method")
 	f.StringVar(&req.URL, "url", "", "URL")
 	f.StringVar(&req.Body, "body", "", "request body")
-	f.StringVar(&req.BodyType, "body-type", "", "response body type")
+	f.StringVar(&req.BodyType, "body-type", "", "request body type")
 	if err := f.Parse(args); err != nil {
 		if err == flag.ErrHelp {
 			return nil

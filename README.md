@@ -70,6 +70,27 @@ Usage:
   -y-url="": URL for Y
 ```
 
+```
+$ http mwu -sample-size=12 \
+        -x-url="http://wavsep.local/wavsep/active/SQL-Injection/SInjection-Detection-Evaluation-GET-200Error/Case19-InjectionInUpdate-NumericWithoutQuotes-CommandInjection-With200Errors.jsp?msgid=1%20xor%20(SELECT%20BENCHMARK(100000,%20MD5(0)))%20%20--%20" \
+        -y-url="http://wavsep.local/wavsep/active/SQL-Injection/SInjection-Detection-Evaluation-GET-200Error/Case19-InjectionInUpdate-NumericWithoutQuotes-CommandInjection-With200Errors.jsp?msgid=1%20xor%20(SELECT%20BENCHMARK(1,%20MD5(0)))%20%20--%20"
+        x                       y
+        137.035266ms            66.845926ms
+        136.625071ms            57.947573ms
+        138.567795ms            57.925258ms
+        136.0876ms              65.507054ms
+        140.457938ms            60.340057ms
+        136.803098ms            65.622593ms
+        138.414367ms            65.411825ms
+        136.523081ms            68.903624ms
+        135.545243ms            56.019208ms
+        145.325309ms            56.887758ms
+        146.11732ms             74.017627ms
+        139.016398ms            65.235549ms
+p: 3.22564145623927e-05
+```
+
+
 ## http file-server
 
 Share a part of the local file system over HTTP
@@ -103,6 +124,16 @@ Usage:
   -url-file="": file containing a newline separated list of URLs
 ```
 
+```
+$ cat urls.txt
+http://www.google.com/
+http://www.google.com.kh/
+$ http get-urls -url-file=urls.txt
+http://www.google.com.kh/ 200 OK 112.379692ms
+http://www.google.com/ 200 OK 215.434101ms
+
+```
+
 ## http stress-test
 
 Send HTTP requests at a specified rate and duration
@@ -110,10 +141,15 @@ Send HTTP requests at a specified rate and duration
 ```
 Usage:
   -body="": request body
-  -body-type="": response body type
+  -body-type="": request body type
   -duration=3s: send duration
   -method="GET": HTTP method
   -rate=50: send rate (req/s)
   -timeout=20s: HTTP request timeout
   -url="": URL
+```
+
+```
+$ http stress-test -rate=2 -duration=5.2s -url='http://www.google.com/'
+total 10 (0 failed) acc time: 1.010624357s avg: 101.062435ms
 ```

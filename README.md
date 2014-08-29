@@ -2,7 +2,7 @@
 ## http
 
 A collection of tools for testing HTTP services as well as exposing some
-Go functionality to the shell that makes life easier (e.g., the file servers
+Go functionality to the shell that makes life easier (e.g., the file server)
 
 ### Install
 

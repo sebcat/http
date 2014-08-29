@@ -51,7 +51,7 @@ Commands:
 
 ## http mwu
 Sample the response times for two requests (x,y) and calculate the p-value
-for the [http://en.wikipedia.org/wiki/Mann–Whitney_U_test](Mann-Whitney U test). This can be used for mapping back end behavior 
+for the [Mann-Whitney U test](http://en.wikipedia.org/wiki/Mann–Whitney_U_test). This can be used for mapping back end behavior 
 e.g., finding side channels on the time spectrum, testing for blind SQL injections and
 correlating changes of certain input parameters to an increased/decreased response time.
 

@@ -7,21 +7,14 @@ import (
 	"strings"
 )
 
-func fsNoDirList(h http.Handler) http.HandlerFunc {
+func fsDirList(h http.Handler, blockDirList bool) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.RemoteAddr, r.Method, r.URL)
-		if strings.HasSuffix(r.URL.Path, "/") {
+		if blockDirList && strings.HasSuffix(r.URL.Path, "/") {
 			http.NotFound(w, r)
 			return
 		}
 
-		h.ServeHTTP(w, r)
-	})
-}
-
-func fsDirList(h http.Handler) http.HandlerFunc {
-	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		log.Println(r.RemoteAddr, r.Method, r.URL)
 		h.ServeHTTP(w, r)
 	})
 }
@@ -44,12 +37,7 @@ func fsMain(args []string) (err error) {
 		return nil
 	}
 
-	if *noDirList {
-		http.Handle("/", fsNoDirList(http.FileServer(http.Dir(*path))))
-	} else {
-		http.Handle("/", fsDirList(http.FileServer(http.Dir(*path))))
-	}
-
+	http.Handle("/", fsDirList(http.FileServer(http.Dir(*path)), *noDirList))
 	log.Println("Started")
 	return http.ListenAndServe(*listen, nil)
 }

@@ -28,7 +28,7 @@ func fsDirList(h http.Handler) http.HandlerFunc {
 
 func fsMain(args []string) (err error) {
 	var f flag.FlagSet
-	path := f.String("path", "", "path to HTTP root")
+	path := f.String("path", ".", "path to HTTP root")
 	listen := f.String("listen", ":8080", "listening directive")
 	noDirList := f.Bool("no-dir-list", false, "disable directory listing")
 	if err := f.Parse(args); err != nil {

@@ -103,7 +103,7 @@ func mwu(xs, ys []time.Duration) (p float64) {
 
 }
 
-func mwuSampleResponseTime(cli *http.Client, r *Request) (t time.Duration,
+func mwuSampleResponseTime(rt http.RoundTripper, r *Request) (t time.Duration,
 	err error) {
 
 	req, err := r.ToHTTP()
@@ -112,7 +112,7 @@ func mwuSampleResponseTime(cli *http.Client, r *Request) (t time.Duration,
 	}
 
 	start := time.Now()
-	resp, err := cli.Do(req)
+	resp, err := rt.RoundTrip(req)
 	if err != nil {
 		return 0, err
 	}
@@ -132,25 +132,24 @@ func mwuSampleResponseTimes(xreq, yreq *Request, s *mwuSampleSettings) (
 		Dial: (&net.Dialer{
 			Timeout: s.RequestTimeout,
 		}).Dial}
-	cli := &http.Client{Transport: transport}
 
 	// first reqs will be outliers due to e.g., TCP handshake. discard them
 	for i := 0; i < s.NThrowaways; i++ {
-		if _, err = mwuSampleResponseTime(cli, xreq); err != nil {
+		if _, err = mwuSampleResponseTime(transport, xreq); err != nil {
 			return nil, nil, err
 		}
 
-		if _, err = mwuSampleResponseTime(cli, yreq); err != nil {
+		if _, err = mwuSampleResponseTime(transport, yreq); err != nil {
 			return nil, nil, err
 		}
 	}
 
 	for i := 0; i < s.SampleSize; i++ {
-		if xs[i], err = mwuSampleResponseTime(cli, xreq); err != nil {
+		if xs[i], err = mwuSampleResponseTime(transport, xreq); err != nil {
 			return nil, nil, err
 		}
 
-		if ys[i], err = mwuSampleResponseTime(cli, yreq); err != nil {
+		if ys[i], err = mwuSampleResponseTime(transport, yreq); err != nil {
 			return nil, nil, err
 		}
 	}

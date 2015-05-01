@@ -4,6 +4,7 @@ import (
 	"errors"
 	"flag"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"math"
 	"net"
@@ -116,8 +117,8 @@ func mwuSampleResponseTime(cli *http.Client, r *Request) (t time.Duration,
 		return 0, err
 	}
 
-	ioutil.ReadAll(resp.Body)
 	t = time.Since(start)
+	io.Copy(ioutil.Discard, resp.Body)
 	resp.Body.Close()
 	return t, nil
 }

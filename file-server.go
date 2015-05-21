@@ -7,10 +7,10 @@ import (
 	"strings"
 )
 
-func fsDirList(h http.Handler, blockDirList bool) http.HandlerFunc {
+func fsDirList(h http.Handler, allowDirList bool) http.HandlerFunc {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.RemoteAddr, r.Method, r.URL)
-		if blockDirList && strings.HasSuffix(r.URL.Path, "/") {
+		if !allowDirList && strings.HasSuffix(r.URL.Path, "/") {
 			http.NotFound(w, r)
 			return
 		}
@@ -23,7 +23,7 @@ func fsMain(args []string) (err error) {
 	var f flag.FlagSet
 	path := f.String("path", ".", "path to HTTP root")
 	listen := f.String("listen", ":8080", "listening directive")
-	noDirList := f.Bool("no-dir-list", false, "disable directory listing")
+	dirList := f.Bool("dir-list", false, "enable directory listing")
 	if err := f.Parse(args); err != nil {
 		if err == flag.ErrHelp {
 			return nil
@@ -37,7 +37,7 @@ func fsMain(args []string) (err error) {
 		return nil
 	}
 
-	http.Handle("/", fsDirList(http.FileServer(http.Dir(*path)), *noDirList))
+	http.Handle("/", fsDirList(http.FileServer(http.Dir(*path)), *dirList))
 	log.Println("Started")
 	return http.ListenAndServe(*listen, nil)
 }
